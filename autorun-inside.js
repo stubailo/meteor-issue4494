@@ -2,16 +2,18 @@ if (Meteor.isClient) {
   // counter starts at 0
   Session.setDefault('counter', 0);
 
-  function syncVars() {
+  function syncVars(self) {
     Tracker.autorun(function (computation) {
-      Template.instance().counter.set(Session.get('counter'));
+      self.counter.set(Session.get('counter'));
     });
   }
 
   Template.hello.onCreated(function () {
-    this.counter = new ReactiveVar(0);
-    this.autorun(function (computation) {
-      syncVars();
+    var self = this;
+
+    self.counter = new ReactiveVar(0);
+    self.autorun(function (computation) {
+      syncVars(self);
     });
   })
 
